@@ -66,7 +66,7 @@ public class Searcher implements SearchOperations {
 
     @Override
     public Collection<Recording> getRecordingsAfter(int year) {
-        SortedMap<Integer, Set<Recording>> recordingsAfterYear = recordingsByYear.tailMap(year + 1);
+        SortedMap<Integer, Set<Recording>> recordingsAfterYear = recordingsByYear.tailMap(year);
         Set<Recording> afterYearCollection = new HashSet<>();
         for (Set<Recording> query : recordingsAfterYear.values()) {
             afterYearCollection.addAll(query);
@@ -90,7 +90,7 @@ public class Searcher implements SearchOperations {
     public Collection<Recording> getRecordingsByGenre(String genre) {
         HashSet<Recording> genreCollection = new HashSet<Recording>();
         for (Recording recording : recordingSet) {
-            if (recording.getGenre().equals(genre)) {
+            if (recording.getGenre().contains(genre)) {
                 genreCollection.add(recording);
             }
         }
@@ -102,8 +102,8 @@ public class Searcher implements SearchOperations {
         SortedMap<Integer, Set<Recording>> recordingMap = recordingsByYear.subMap(yearFrom, yearTo + 1);
         HashSet<Recording> genreByYearCollection = new HashSet<Recording>();
 
-        for (Set<Recording> record : recordingMap.values()) {
-            for (Recording recording : recordingSet) {
+        for (Set<Recording> recordings : recordingMap.values()) {
+            for (Recording recording : recordings) {
                 if (recording.getGenre().contains(genre)) {
                     genreByYearCollection.add(recording);
                 }
